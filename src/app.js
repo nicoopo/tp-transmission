@@ -10,7 +10,8 @@ const messageRoutes = require('./routes/messages');
 const authRoutes = require('./routes/auth');
 app.use('/messages', messageRoutes);
 app.use('/auth', authRoutes);
-
+const missionRoutes = require('./routes/missions');
+app.use('/missions', missionRoutes);
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('✅ MongoDB connecté'))
     .catch((err) => console.error('❌ Erreur MongoDB :', err));
