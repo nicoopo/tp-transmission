@@ -1,4 +1,5 @@
 const Message = require('../models/Message');
+const jwt = require('jsonwebtoken');
 
 // POST /messages
 const createMessage = async (req, res) => {
@@ -30,6 +31,18 @@ const getMessageById = async (req, res) => {
         }
 
         if (message.type === 'lecture_unique') {
+            const authHeader = req.headers.authorization;
+
+            if (!authHeader || !authHeader.startsWith('Bearer ')) {
+                return res.status(401).json({ error: 'Token manquant — message classifié' });
+            }
+
+            try {
+                jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+            } catch {
+                return res.status(401).json({ error: 'Token invalide ou expiré' });
+            }
+
             await message.deleteOne();
         }
 
