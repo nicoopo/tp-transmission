@@ -3,7 +3,7 @@ const router = express.Router();
 const { createMessage, getMessages, getMessageById } = require('../controllers/messageController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-router.post('/', createMessage);
+router.post('/', authMiddleware, createMessage);
 router.get('/', getMessages);
 router.get('/:id', getMessageById);
 

@@ -14,6 +14,11 @@ const messageSchema = new mongoose.Schema({
         enum: ['public', 'lecture_unique'],
         default: 'public',
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
 }, {
     timestamps: true, // génère automatiquement createdAt et updatedAt
 });

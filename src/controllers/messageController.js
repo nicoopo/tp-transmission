@@ -4,8 +4,12 @@ const jwt = require('jsonwebtoken');
 // POST /messages
 const createMessage = async (req, res) => {
     try {
-        const message = await Message.create(req.body);
+        const message = await Message.create({
+            ...req.body,
+            createdBy: req.user.id,
+        });
         res.status(201).json(message);
+
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -14,7 +18,7 @@ const createMessage = async (req, res) => {
 // GET /messages
 const getMessages = async (req, res) => {
     try {
-        const messages = await Message.find();
+        const messages = await Message.find().populate('createdBy', 'email role');
         res.json(messages);
     } catch (err) {
         res.status(500).json({ error: err.message });
